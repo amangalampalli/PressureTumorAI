@@ -1,7 +1,9 @@
 import cv2
 import numpy as np
 
-pathToMarkers = "/Users/aditya/Programming/Pressure-Based-Tumor-Detection/ArUco/markers/pngImages/"
+pathToMarkers = (
+    "/Users/aditya/Programming/Pressure-Based-Tumor-Detection/ArUco/markers/pngImages/"
+)
 markerDict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_4X4_50)
 
 
