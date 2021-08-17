@@ -82,7 +82,14 @@ while True:
     corners, ids, rejectedImgPoints = aruco.detectMarkers(
         gray, aruco_dict, parameters=parameters
     )
-
+    corners, ids, rejectedImgPoints, recoveredIds = aruco.refineDetectedMarkers(
+                image = gray,
+                board = board,
+                detectedCorners = corners,
+                detectedIds = ids,
+                rejectedCorners = rejectedImgPoints,
+                cameraMatrix = mtx,
+                distCoeffs = dist)
     retval, rvec, tvec = aruco.estimatePoseBoard(corners, ids, board, mtx, dist, rvec, tvec)
     if (retval > 0):
         frame = aruco.drawAxis(frame, mtx, dist, rvec, tvec, markerWidth)
