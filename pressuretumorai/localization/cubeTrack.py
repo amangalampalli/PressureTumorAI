@@ -74,6 +74,8 @@ board_corners = [
 ]
 board = aruco.Board_create(board_corners, aruco_dict, board_ids)
 
+rvec = None
+tvec = None
 while True:
     ret, frame = cap.read()
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -81,12 +83,10 @@ while True:
         gray, aruco_dict, parameters=parameters
     )
 
-    if np.all(ids != None):
-        rvec, tvec, _ = aruco.estimatePoseSingleMarkers(corners, markerWidth, mtx, dist)
-        for i in range(len(ids)):
-            frame = aruco.drawAxis(frame, mtx, dist, rvec[i], tvec[i], 0.1)
-            frame = aruco.drawDetectedMarkers(frame, corners, ids)
-
+    retval, rvec, tvec = aruco.estimatePoseBoard(corners, ids, board, mtx, dist, rvec, tvec)
+    if (retval > 0):
+        frame = aruco.drawAxis(frame, mtx, dist, rvec, tvec, markerWidth)
+        frame = aruco.drawDetectedMarkers(frame, corners, ids)
     # Display the resulting frame
     cv2.imshow("frame", frame)
     if cv2.waitKey(1) & 0xFF == ord("q"):
