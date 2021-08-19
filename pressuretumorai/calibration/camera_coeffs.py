@@ -15,7 +15,7 @@ objpoints = []  # 3d point in real world space
 imgpoints = []  # 2d points in image plane.
 
 images = glob.glob(
-    "/Users/aditya/Programming/Pressure-Based-Tumor-Detection/calibration/dataset/*.png"
+    "/Users/aditya/Programming/PressureTumorAI/pressuretumorai/calibration/dataset*.png"
 )
 
 for fname in images:
@@ -40,7 +40,7 @@ cv.destroyAllWindows()
 pickle.dump(
     [ret, mtx, dist, rvecs, tvecs],
     open(
-        "/Users/aditya/Programming/Pressure-Based-Tumor-Detection/calibration/cameraCoeffs.pickle",
+        "/Users/aditya/Programming/PressureTumorAI/pressuretumorai/calibration/cameraCoeffs.pickle",
         "wb",
     ),
 )

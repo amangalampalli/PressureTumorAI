@@ -13,6 +13,8 @@ tensorflow-macos = "^2.5.0"
 tensorflow-metal = "^0.1.2"
 opencv-python = "4.5.1.48"
 opencv-contrib-python = "4.5.1.48"
+esptool = "^3.1"
+adafruit-ampy = "^1.1.0"
 
 [tool.poetry.dev-dependencies]
 

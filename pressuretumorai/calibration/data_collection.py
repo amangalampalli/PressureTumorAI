@@ -26,7 +26,7 @@ def writeFrame():
         ret, frame = cap.read()
         time.sleep(0.7)
         cv2.imwrite(
-            "/Users/aditya/Programming/Pressure-Based-Tumor-Detection/callibration/dataset/"
+            "/Users/aditya/Programming/PressureTumorAI/pressuretumorai/calibration/dataset"
             + str(CURRENT_PICTURES)
             + ".png",
             frame,
