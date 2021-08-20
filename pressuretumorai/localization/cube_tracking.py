@@ -1,6 +1,6 @@
 import cv2
 from cv2 import aruco
-from pressuretumorai.arucoMarkers.markerGen import markerDict
+from pressuretumorai.aruco_markers.markerGen import markerDict
 import numpy as np
 import pickle
 
