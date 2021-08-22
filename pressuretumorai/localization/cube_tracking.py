@@ -7,7 +7,7 @@ import pickle
 [ret, mtx, dist, rvecs, tvecs] = pickle.load(
     open("pressuretumorai/calibration/cameraCoeffs.pickle", "rb")
 )
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 
 aruco_dict = markerDict

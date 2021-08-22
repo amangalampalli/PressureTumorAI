@@ -3,6 +3,7 @@ import struct
 import socket
 import sys
 import random
+import struct
 # from machine import Pin
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -18,7 +19,7 @@ try:
         # led.low()
         message = random.uniform(0, 100)
         print("Sending message: " + str(message))
-        sock.send(struct.pack("d", message))
+        sock.send(struct.pack('<f', message))
         # led.high()
 
 
