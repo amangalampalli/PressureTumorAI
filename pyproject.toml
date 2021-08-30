@@ -15,6 +15,10 @@ opencv-python = "4.5.1.48"
 opencv-contrib-python = "4.5.1.48"
 esptool = "^3.1"
 adafruit-ampy = "^1.1.0"
+TauLidarCamera = "^0.0.5"
+matplotlib = "^3.4.3"
+scikit-learn = "^0.24.2"
+pre-commit = "^2.14.1"
 
 [tool.poetry.dev-dependencies]
 

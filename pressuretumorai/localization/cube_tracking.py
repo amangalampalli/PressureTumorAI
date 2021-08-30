@@ -95,6 +95,8 @@ while True:
         corners, ids, board, mtx, dist, rvec, tvec
     )
     if retval > 0:
+        print(rvec)
+        print(tvec)
         frame = aruco.drawAxis(frame, mtx, dist, rvec, tvec, markerWidth)
         frame = aruco.drawDetectedMarkers(frame, corners, ids)
     # Display the resulting frame

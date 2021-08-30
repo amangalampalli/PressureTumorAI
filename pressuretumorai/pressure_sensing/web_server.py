@@ -16,11 +16,10 @@ connection, client_address = sock.accept()
 
 try:
     print("Connection from " + str(client_address))
-    sock.connect(client_address)
     while True:
         data = connection.recv(4)
-        print(struct.unpack("<f", data))
-        sock.send(b'Message Recieved')
+        print(struct.unpack("<f", data)[0])
+        connection.sendall(data)
 
 
 except KeyboardInterrupt:
