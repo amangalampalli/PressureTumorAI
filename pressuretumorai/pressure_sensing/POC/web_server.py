@@ -1,7 +1,6 @@
 import socket
+import sys
 import struct
-from pressuretumorai.utils.filewriter import writeFile
-from pressuretumorai.localization.stylus import getCubePosition
 
 def startServer():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -21,11 +20,12 @@ def startServer():
         print("Connection from " + str(client_address))
         while True:
             data = connection.recv(4)
-            message = (struct.unpack("<f", data)[0])
-            position = getCubePosition()
-            writeFile(str(position) + ", " + str(message))
-            print("Received: " + str(message) + " and tip's position is " + str(position))
+            print(struct.unpack("<f", data)[0])
             connection.sendall(data)
     except:
         connection.close()
         print("Connection closed")
+    sys.exit()
+
+if __name__ == "__main__":
+    startServer()
