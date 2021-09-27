@@ -1,38 +1,15 @@
 import socket
 import struct
+import numpy as np
+from scapy.all import *
 
-# from src.data_processing.filewriter import writeFile
-# from src.localization.stylus import getCubePosition
+from src.ipc_broker.socket_init import create_publisher
+from src.ipc_broker.socket_comms import send_array
 
-# def startServer():
-#     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-#     host = socket.gethostname()
-#     port = 8000
-#     server_address = (host, port)
-#     print("Server starting up at " + str(server_address))
-#     sock.bind(server_address)
-
-#     sock.listen(1)
-
-#     print("Waiting for connection")
-#     connection, client_address = sock.accept()
-
-#     try:
-#         print("Connection from " + str(client_address))
-#         while True:
-#             data = connection.recv(4)
-#             message = (struct.unpack("<f", data)[0])
-#             position = getCubePosition()
-#             writeFile(str(position) + ", " + str(message))
-#             print("Received: " + str(message) + " and tip's position is " + str(position))
-#             connection.sendall(data)
-#     except:
-#         connection.close()
-#         print("Connection closed")
+pubSocket = create_publisher(8001)
 
 
-def initSocket():
+def runServer():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     host = socket.gethostname()
@@ -40,27 +17,23 @@ def initSocket():
     server_address = (host, port)
     print("Server starting up at " + str(server_address))
     sock.bind(server_address)
-    notConnected = True
     print("Waiting for connection")
-    while notConnected:
-        try:
-            connection, client_address = sock.accept()
-            notConnected = False
-        except:
-            pass
+    connection, client_address = sock.accept()
     print("Connection from " + str(client_address))
-    return connection, client_address
+    while True:
+        try:
+            data = connection.recv(4)
+            message = struct.unpack("<f", data)[0]
+            connection.sendall(data)
+            send_array(pubSocket, np.array([message, pingServer(client_address)]))
+        except:
+            connection.close()
+            print("Connection closed")
 
 
-def runServer(connection, client_address):
-    try:
-        data = connection.recv(4)
-        message = struct.unpack("<f", data)[0]
-        connection.sendall(data)
-    except:
-        connection.close()
-        print("Connection closed")
-    if message is not None:
-        return message
-    else:
-        return 0
+def pingServer(ip_adrress):
+    isRunning = False
+    icmp = IP(dst=ip_adrress) / ICMP()
+    resp = sr1(icmp, timeout=10)
+    isRunning = resp is not None
+    return isRunning

@@ -1,6 +1,6 @@
 import cv2
 
-from markerGen import markerDict
+from marker_generation import markerDict
 
 
 def detectMarkers(frame):
@@ -40,7 +40,7 @@ def detectMarkers(frame):
 
 
 def getFrames():
-    videoObj = cv2.VideoCapture(1)
+    videoObj = cv2.VideoCapture(0)
     while True:
         ret, frame = videoObj.read()
         cv2.imshow("Webcam Feed", detectMarkers(frame))

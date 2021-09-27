@@ -1,0 +1,7 @@
+{
+    "[python]": {
+
+        "editor.wordBasedSuggestions": false
+    },
+    "python.condaPath": "/Users/aditya/opt/anaconda3/envs/PressureTumorAI/bin/python"
+}

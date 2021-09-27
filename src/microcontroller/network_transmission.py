@@ -22,18 +22,14 @@ sock.connect(server_address)
 try:
     print("Connected")
     while True:
-        if button.value() == 0:
-            led.off()
-            message = float(random.getrandbits(32) / 100)
-            print("Sending message: " + str(message))
-            sock.send(struct.pack("<f", message))
-            data = sock.recv(4)
-            if data == message:
-                pass
-            else:
-                Exception("Message not correct")
-        else:
-            led.on()
+        led.off()
+        message = float(random.getrandbits(32) / 100)
+        print("Sending message: " + str(message))
+        sock.send(struct.pack("<f", message))
+        data = sock.recv(4)
+        if data != message:
+            Exception("Message not correct")
+        led.on()
 
 except:
     print("Closing connection")

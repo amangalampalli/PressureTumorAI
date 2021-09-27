@@ -17,6 +17,10 @@ opencv-python = "^4.5.3"
 opencv-contrib-python = "^4.5.3"
 plotly = "^5.3.1"
 tkdesigner = "^1.0.4"
+pyzmq = "^22.3.0"
+msgpack = "^1.0.2"
+msgpack-numpy = "^0.4.7"
+scapy = "^2.4.5"
 
 [tool.poetry.dev-dependencies]
 
