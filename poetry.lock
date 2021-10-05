@@ -641,7 +641,7 @@ testing = ["coverage (>=4)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "b638c9ecb40c79f500404c08d660f81d0737fac7bd4efd3c25ffe897630243ec"
+content-hash = "5a8a653ac000bcf14ddfc731e7de11d086fcc181f6db39b8f2bd0dda03e3ffd4"
 
 [metadata.files]
 adafruit-ampy = [

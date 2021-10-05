@@ -36,7 +36,7 @@ def send_array(socket, A, flags=0, copy=True, track=False):
     )
 
 
-def recv_array(socket, flags=0, copy=True, track=False):
+def recv_array(socket, flags=zmq.NOBLOCK, copy=True, track=False):
     """recv a numpy array"""
     msg = socket.recv(flags=flags, copy=copy, track=track)
     return msgpack.unpackb(msg, object_hook=m.decode)

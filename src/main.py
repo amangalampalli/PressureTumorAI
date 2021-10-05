@@ -1,32 +1,28 @@
-# from multiprocessing import Process
-# from pressuretumorai.pressure_sensing.web_server import startServer
-# from pressuretumorai.localization.stylus import showCamera
-# from pressuretumorai.utils.filewriter import closeFile
+from multiprocessing import Process
 
-# if __name__ == "__main__":
-#     try:
-#         serverProcess = Process(target=startServer)
-#         serverProcess.start()
-#         cameraPreview = Process(target=showCamera)
-#         cameraPreview.start()
-#         serverProcess.join()
-#         cameraPreview.join()
-#     except:
-#         closeFile()
+from src.dashboard.gui import dashboard
 
-import cv2
-from src.localization.stylus import processFrame
-from src.web_server.web_server import initSocket, runServer
-from src.data_processing.filewriter import writeFile, closeFile
+# from src.web_server.web_server import runServer
+from src.localization.frame_streamer import stream_frames
+import time
 
 if __name__ == "__main__":
-    connection, client_address = initSocket()
-    while True:
-        frame = processFrame(findPosition=False)
-        message = runServer(connection, client_address)
-        if message is not None:
-            writeFile(str(processFrame(findPosition=True)) + ", " + str(message))
-        cv2.imshow("frame", frame)
-        if cv2.waitKey(1) & 0xFF == ord("q"):
-            break
-    closeFile()
+    # Start the frame streamer
+    frame_streamer_process = Process(target=stream_frames)
+    frame_streamer_process.start()
+
+    # Delay the rendering of the GUI to allow the frame streamer to start
+    time.sleep(0.1)
+
+    # Start the GUI
+    gui_process = Process(target=dashboard)
+    gui_process.start()
+
+    # Start the web server
+    # web_server_process = Process(target=runServer)
+    # web_server_process.start()
+
+    # Wait for the processes to finish
+    # gui_process.join()
+    # web_server_process.join()
+    frame_streamer_process.join()

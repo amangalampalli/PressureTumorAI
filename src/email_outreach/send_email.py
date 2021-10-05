@@ -2,7 +2,7 @@ import smtplib
 from email.message import EmailMessage
 
 EMAIL_ADDRESS = "aditya.mangalampalli@gmail.com"
-EMAIL_PASSWORD = "mvtgkkisjlebsohs"
+EMAIL_PASSWORD = ""
 
 
 def parse_contacts(filename):
@@ -53,3 +53,6 @@ if __name__ == "__main__":
     )
     for name, email in zip(names, emails):
         sendEmail(name, email)
+
+
+# mvtgkkisjlebsohs

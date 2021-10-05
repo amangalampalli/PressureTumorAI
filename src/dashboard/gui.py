@@ -3,10 +3,14 @@
 
 
 from pathlib import Path
+from src.dashboard.concurrency.image_recv import return_frame
+from src.dashboard.concurrency.pressure_recv import return_pressure
+from src.dashboard.concurrency.position_recv import return_position
+from src.dashboard.concurrency.network_status_recv import return_network_status
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Tk, Canvas, Button, PhotoImage
+from tkinter import StringVar, Tk, Canvas, Button, PhotoImage, Label, StringVar
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -17,136 +21,148 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 
-window = Tk()
+def dashboard():
+    window = Tk()
 
-window.geometry("1680x1000")
-window.configure(bg="#FFFFFF")
+    window.geometry("1680x1000")
+    window.configure(bg="#FFFFFF")
+
+    canvas = Canvas(
+        window,
+        bg="#FFFFFF",
+        height=1000,
+        width=1680,
+        bd=0,
+        highlightthickness=0,
+        relief="ridge",
+    )
+
+    canvas.place(x=0, y=0)
+
+    banner_img = PhotoImage(file=relative_to_assets("banner.png"))
+    banner = canvas.create_image(840.0, 38.0, image=banner_img)
+
+    collectionImg = PhotoImage(file=relative_to_assets("start_collection.png"))
+    collection_button = Button(
+        image=collectionImg,
+        borderwidth=0,
+        highlightthickness=0,
+        command=lambda: print("button_1 clicked"),
+        relief="flat",
+    )
+    collection_button.place(
+        x=1054.5315551757811,
+        y=12.782693862915096,
+        width=327.7757568359375,
+        height=52.000003814697266,
+    )
+
+    logoImg = PhotoImage(file=relative_to_assets("logo.png"))
+    logo = canvas.create_image(40.999999999999886, 39.00000000000006, image=logoImg)
+
+    canvas.create_text(
+        68.99999999999989,
+        19.000000000000057,
+        anchor="nw",
+        text="PressureTumorAI",
+        fill="#000000",
+        font=("Avenir Black", 36 * -1),
+    )
+
+    dataManageImg = PhotoImage(file=relative_to_assets("save_data.png"))
+    dataManage = Button(
+        image=dataManageImg,
+        borderwidth=0,
+        highlightthickness=0,
+        command=lambda: print("button_2 clicked"),
+        relief="flat",
+    )
+    dataManage.place(
+        x=1408.303466796875, y=12.782693862915096, width=251.77684020996094, height=52.0
+    )
+
+    image_previewImg = PhotoImage(file=relative_to_assets("image_preview.png"))
+    image_preview = canvas.create_image(
+        338.9999999999999, 276.00000000000006, image=image_previewImg
+    )
+    imgLabel = Label(window)
+    imgLabel.place(x=34.5, y=105, width=610, height=343)
+
+    def displayCamera():
+        imgtk = return_frame()
+        imgLabel.imgtk = imgtk
+        imgLabel.configure(image=imgtk)
+        # Repeat after an interval to capture continiously
+        imgLabel.after(1, displayCamera)
+
+    pressure_readingImg = PhotoImage(file=relative_to_assets("pressure_reading.png"))
+    pressure_readingTab = canvas.create_image(
+        921.9999999999999, 276.00000000000006, image=pressure_readingImg
+    )
+
+    outlier_detectionImg = PhotoImage(file=relative_to_assets("outlier_detection.png"))
+    outlier_detection = canvas.create_image(1278.0, 688.0, image=outlier_detectionImg)
+
+    position_dataImg = PhotoImage(file=relative_to_assets("position_data.png"))
+    position_data = canvas.create_image(
+        1423.0, 277.00000000000006, image=position_dataImg
+    )
+
+    connection_statusImg = PhotoImage(file=relative_to_assets("connection_status.png"))
+    connection_status = canvas.create_image(
+        199.0000000000001, 962.0, image=connection_statusImg
+    )
+    connectionValue = StringVar()
+    connectionLabel = Label(window, bg="black", fg="white")
+    connectionLabel.config(font=("Avenir Medium", 40))
+    connectionLabel.place(x=330, y=940.0, width=50, height=50)
+
+    def displayNetworkStatus():
+        if return_network_status() == True:
+            connectionValue.set("📶")
+        else:
+            connectionValue.set("❌")
+        connectionLabel.configure(textvariable=connectionValue)
+        connectionLabel.after(500, displayNetworkStatus)
+
+    stylus_positionImg = PhotoImage(file=relative_to_assets("stylus_position.png"))
+    stylus_position = canvas.create_image(
+        774.9999999999999, 962.0, image=stylus_positionImg
+    )
+    # positionLabel.place(x=700.0, y=940.0, width=400, height=50)
+    positionValue = StringVar()
+    positionLabel = Label(window, bg="black", fg="white")
+    positionLabel.config(font=("Avenir Medium", 25))
+    positionLabel.place(x=700.0, y=940.0, width=400, height=50)
+
+    def displayPosition():
+        positionValue.set(return_position())
+        positionLabel.configure(textvariable=positionValue)
+        positionLabel.after(500, displayPosition)
+
+    main_graphImg = PhotoImage(file=relative_to_assets("main_graph.png"))
+    main_graph = canvas.create_image(439.9999999999999, 688.0, image=main_graphImg)
+
+    pressureImg = PhotoImage(file=relative_to_assets("pressureImg.png"))
+    pressure = canvas.create_image(1417.0, 962.0, image=pressureImg)
+    pressureValue = StringVar()
+    pressureLabel = Label(window, bg="black", fg="white")
+    pressureLabel.config(font=("Avenir Medium", 25))
+    pressureLabel.place(x=1470.0, y=940.0, width=190, height=50)
+
+    def displayPressure():
+        pressureValue.set(return_pressure())
+        pressureLabel.configure(textvariable=pressureValue)
+        pressureLabel.after(500, displayPressure)
+
+    displayNetworkStatus()
+    displayPosition()
+    displayPressure()
+    displayCamera()
+
+    window.resizable(False, False)
+    window.mainloop()
 
 
-canvas = Canvas(
-    window,
-    bg="#FFFFFF",
-    height=1000,
-    width=1680,
-    bd=0,
-    highlightthickness=0,
-    relief="ridge",
-)
-
-canvas.place(x=0, y=0)
-image_image_1 = PhotoImage(file=relative_to_assets("image_1.png"))
-image_1 = canvas.create_image(840.0, 38.0, image=image_image_1)
-
-button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
-button_1 = Button(
-    image=button_image_1,
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
-    relief="flat",
-)
-button_1.place(
-    x=784.5315551757811,
-    y=12.782693862915096,
-    width=327.7757568359375,
-    height=52.000003814697266,
-)
-
-image_image_2 = PhotoImage(file=relative_to_assets("image_2.png"))
-image_2 = canvas.create_image(
-    40.999999999999886, 39.00000000000006, image=image_image_2
-)
-
-canvas.create_text(
-    68.99999999999989,
-    19.000000000000057,
-    anchor="nw",
-    text="PressureTumorAI",
-    fill="#000000",
-    font=("Avenir Black", 36 * -1),
-)
-
-button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
-button_2 = Button(
-    image=button_image_2,
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_2 clicked"),
-    relief="flat",
-)
-button_2.place(
-    x=1158.303466796875, y=12.782693862915096, width=251.77684020996094, height=52.0
-)
-
-button_image_3 = PhotoImage(file=relative_to_assets("button_3.png"))
-button_3 = Button(
-    image=button_image_3,
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_3 clicked"),
-    relief="flat",
-)
-button_3.place(
-    x=1456.15283203125,
-    y=12.782693862915096,
-    width=196.42315673828125,
-    height=50.18000411987305,
-)
-
-image_image_3 = PhotoImage(file=relative_to_assets("image_3.png"))
-image_3 = canvas.create_image(
-    338.9999999999999, 276.00000000000006, image=image_image_3
-)
-
-image_image_4 = PhotoImage(file=relative_to_assets("image_4.png"))
-image_4 = canvas.create_image(
-    921.9999999999999, 276.00000000000006, image=image_image_4
-)
-
-image_image_5 = PhotoImage(file=relative_to_assets("image_5.png"))
-image_5 = canvas.create_image(1278.0, 688.0, image=image_image_5)
-
-image_image_6 = PhotoImage(file=relative_to_assets("image_6.png"))
-image_6 = canvas.create_image(1423.0, 277.00000000000006, image=image_image_6)
-
-image_image_7 = PhotoImage(file=relative_to_assets("image_7.png"))
-image_7 = canvas.create_image(199.0000000000001, 962.0, image=image_image_7)
-
-image_image_8 = PhotoImage(file=relative_to_assets("image_8.png"))
-image_8 = canvas.create_image(774.9999999999999, 962.0, image=image_image_8)
-
-image_image_9 = PhotoImage(file=relative_to_assets("image_9.png"))
-image_9 = canvas.create_image(
-    233.04107666015614, 157.38093566894537, image=image_image_9
-)
-
-image_image_10 = PhotoImage(file=relative_to_assets("image_10.png"))
-image_10 = canvas.create_image(
-    237.0702438354491, 235.52381896972662, image=image_image_10
-)
-
-image_image_11 = PhotoImage(file=relative_to_assets("image_11.png"))
-image_11 = canvas.create_image(439.9999999999999, 688.0, image=image_image_11)
-
-canvas.create_text(
-    335.9999999999999,
-    945.0,
-    anchor="nw",
-    text="📶",
-    fill="#FFFFFF",
-    font=("Avenir Medium", 40 * -1),
-)
-
-canvas.create_text(
-    335.9999999999999,
-    951.0,
-    anchor="nw",
-    text="❌",
-    fill="#FFFFFF",
-    font=("Avenir Medium", 40 * -1),
-)
-
-image_image_12 = PhotoImage(file=relative_to_assets("image_12.png"))
-image_12 = canvas.create_image(1417.0, 962.0, image=image_image_12)
-window.resizable(False, False)
-window.mainloop()
+if __name__ == "__main__":
+    dashboard()

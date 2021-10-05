@@ -17,7 +17,7 @@ def create_publisher(port):
     return socket
 
 
-def create_subscriber(port):
+def create_subscriber(port, isImage=False):
     """
     Create a subscriber socket.
 
@@ -30,5 +30,7 @@ def create_subscriber(port):
     context = zmq.Context()
     socket = context.socket(zmq.SUB)
     socket.connect("tcp://localhost:%s" % port)
+    if isImage:
+        socket.setsockopt(zmq.CONFLATE, 1)
     socket.setsockopt_string(zmq.SUBSCRIBE, "")
     return socket

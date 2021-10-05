@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from src.localization.aruco_tracking import localization
 from src.ipc_broker.socket_init import create_publisher
-from src.ipc_broker.socket_comms import send_array, send_another_array
+from src.ipc_broker.socket_comms import send_array, send_array
 
 
 def stream_frames():
@@ -13,7 +13,7 @@ def stream_frames():
         ret, frame = cap.read()
         if ret:
             position = localization(frame, positionList)
-            send_another_array(socket, position)
+            send_array(socket, position)
         else:
             continue
 

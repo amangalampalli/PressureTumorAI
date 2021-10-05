@@ -1,7 +1,6 @@
 import socket
 import struct
 import numpy as np
-from scapy.all import *
 
 from src.ipc_broker.socket_init import create_publisher
 from src.ipc_broker.socket_comms import send_array
@@ -25,15 +24,8 @@ def runServer():
             data = connection.recv(4)
             message = struct.unpack("<f", data)[0]
             connection.sendall(data)
-            send_array(pubSocket, np.array([message, pingServer(client_address)]))
+            send_array(pubSocket, np.array(message))
         except:
             connection.close()
             print("Connection closed")
-
-
-def pingServer(ip_adrress):
-    isRunning = False
-    icmp = IP(dst=ip_adrress) / ICMP()
-    resp = sr1(icmp, timeout=10)
-    isRunning = resp is not None
-    return isRunning
+            break
