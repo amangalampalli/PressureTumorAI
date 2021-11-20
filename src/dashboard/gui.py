@@ -4,9 +4,10 @@
 
 from pathlib import Path
 from src.dashboard.concurrency.image_recv import return_frame
-from src.dashboard.concurrency.pressure_recv import return_pressure
+from src.dashboard.concurrency.pressure import return_pressure
 from src.dashboard.concurrency.position_recv import return_position
 from src.dashboard.concurrency.network_status_recv import return_network_status
+from src.dashboard.graphs.pressure_time import graphPressure
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
@@ -99,6 +100,8 @@ def dashboard():
     pressure_readingTab = canvas.create_image(
         921.9999999999999, 276.00000000000006, image=pressure_readingImg
     )
+
+    # def graphPressure():
 
     outlier_detectionImg = PhotoImage(file=relative_to_assets("outlier_detection.png"))
     outlier_detection = canvas.create_image(1278.0, 688.0, image=outlier_detectionImg)
