@@ -13,8 +13,6 @@ adafruit-ampy = "^1.1.0"
 matplotlib = "^3.4.3"
 scikit-learn = "^0.24.2"
 pre-commit = "^2.14.1"
-opencv-python = "^4.5.3"
-opencv-contrib-python = "^4.5.3"
 plotly = "^5.3.1"
 tkdesigner = "^1.0.4"
 pyzmq = "^22.3.0"
@@ -22,6 +20,9 @@ msgpack = "^1.0.2"
 msgpack-numpy = "^0.4.7"
 scapy = "^2.4.5"
 Pillow = "^8.3.2"
+numpy = {version = "^1.21.4", python = ">=3.8,<3.11"}
+opencv-python = "^4.5.4"
+opencv-contrib-python = "^4.5.4"
 
 [tool.poetry.dev-dependencies]
 
